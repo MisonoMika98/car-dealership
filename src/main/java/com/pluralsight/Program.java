@@ -1,6 +1,6 @@
 package com.pluralsight;
 
-public class Main
+public class Program
 {
     static void main()
     {

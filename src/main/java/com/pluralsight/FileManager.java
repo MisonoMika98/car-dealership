@@ -1,4 +1,5 @@
 package com.pluralsight;
 
-public class FileManager {
+public class FileManager
+{
 }
