@@ -1,33 +1,71 @@
 package com.pluralsight;
 
 import java.io.BufferedReader;
-import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.PrintStream;
+import java.io.PrintWriter;
 
 public class FileManager
 {
-    public void getDealership()
+    // returns Dealership object so the caller can use it, using void would do nothing with it
+    public Dealership getDealership()
     {
+        // declared outside try block so it can be returned after try/catch ends
         Dealership dealership = null;
+
         try
         {
             BufferedReader bufferedReader = new BufferedReader(new FileReader("inventory.csv"));
 
-            // first line is dealership info
+            // create an array to skip the header
             String line = bufferedReader.readLine();
             String[] dealershipColumns = line.split("\\|");
 
             dealership = new Dealership(dealershipColumns[0], dealershipColumns[1], dealershipColumns[2]);
 
+            while ((line = bufferedReader.readLine()) != null)
+            {
+                // create array to read each column of .csv file, vehicles specifically
+                String[] columns = line.split("\\|");
 
-                // breaks the endless loop
-//                lines = bufferedReader.readLine();
+                int vin          = Integer.parseInt(columns[0]);
+                int year         = Integer.parseInt(columns[1]);
+                String make      = columns[2];
+                String model     = columns[3];
+                String vehicleType = columns[4];
+                String color     = columns[5];
+                int odometer     = Integer.parseInt(columns[6]);
+                double price     = Double.parseDouble(columns[7]);
+
+                Vehicle vehicle = new Vehicle(vin, year, make, model, vehicleType, color, odometer, price);
+                dealership.addVehicle(vehicle);
+            }
+            // close bufferedreader to stop memory leak
+            bufferedReader.close();
+
         }
         catch (Exception ex)
         {
             System.out.println("What are you doing!");
             System.out.println(ex.getMessage());
         }
+        // return here so try catch block doesn't use it
+        return dealership;
     }
+
+
+
+    public void saveDealership(Dealership dealership)
+    {
+        try
+        {
+            PrintWriter printWriter = new PrintWriter("inventory.csv");
+        }
+
+        catch (Exception ex)
+        {
+            System.out.println("What are you doing!");
+            System.out.println(ex.getMessage());
+        }
+    }
+
 }
