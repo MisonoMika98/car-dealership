@@ -50,6 +50,8 @@ public class Dealership
         this.name = name;
     }
 
+
+
     // getters for the arraylist
     public ArrayList<Vehicle> getVehiclesByPrice(double min, double max)
     {

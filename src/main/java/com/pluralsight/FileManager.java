@@ -2,6 +2,7 @@ package com.pluralsight;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.PrintWriter;
 
 public class FileManager
@@ -21,6 +22,7 @@ public class FileManager
             String[] dealershipColumns = line.split("\\|");
 
             dealership = new Dealership(dealershipColumns[0], dealershipColumns[1], dealershipColumns[2]);
+
 
             while ((line = bufferedReader.readLine()) != null)
             {
@@ -43,6 +45,7 @@ public class FileManager
             bufferedReader.close();
 
         }
+
         catch (Exception ex)
         {
             System.out.println("What are you doing!");
@@ -58,7 +61,20 @@ public class FileManager
     {
         try
         {
-            PrintWriter printWriter = new PrintWriter("inventory.csv");
+            PrintWriter writer = new PrintWriter(new FileWriter("inventory.csv"));
+
+            // writes/rewrites the dealership header
+            writer.printf("%s|%s|%s%n", dealership.getName(), dealership.getAddress(), dealership.getPhone());
+
+            for (Vehicle vehicles : dealership.getAllVehicles())
+            {
+                writer.printf("%d|%d|%s|%s|%s|%s|%d|%.2f%n", vehicles.getVin(), vehicles.getYear(), vehicles.getMake(),
+                        vehicles.getModel(), vehicles.getColor(), vehicles.getOdometer(), vehicles.getPrice());
+            }
+
+            // closes printwriter to stop memory leak
+            writer.close();
+
         }
 
         catch (Exception ex)
